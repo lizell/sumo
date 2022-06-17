@@ -32,8 +32,8 @@ unsigned int lineSensorValues[NUM_SENSORS];
 // A sensors reading must be greater than or equal to this
 // threshold in order for the program to consider that sensor as
 // seeing an object.
-uint8_t sensorThreshold = 2;
-uint8_t chargeSensorThreshold = 5;
+const uint8_t sensorThreshold = 2;
+const uint8_t chargeSensorThreshold = 5;
 
 // The maximum speed to drive the motors while turning.  400 is
 // full speed.
@@ -101,7 +101,6 @@ void waitForButtonAndCountDown()
   do {
     if (buttonA.isPressed()) {
       buttonPressed = true;
-      turnSpeed = 200;
     } else if (buttonB.isPressed()) {
       buttonPressed = true;
       isNeverStop = true;
@@ -244,7 +243,7 @@ void loop()
   else
   {
     if (!isCharging) {
-      if (objectSeen && isNeverStop)
+      if (objectSeen)
       {
         // An object is visible, so we will start decelerating in
         // order to help the robot find the object without
@@ -296,7 +295,7 @@ void loop()
           }
         }
       }
-      else if (searchTime > 0 && (millis() - searchTime) > (searchTimeThreshold + random(-250, 250))) {
+      else if (searchTime != 0 && (millis() - searchTime) > (searchTimeThreshold + random(-250, 250))) {
         charge(true);
         searchTime = 0;
       }
